@@ -1,0 +1,272 @@
+﻿@model DrinksMachine.WebUI.Models.VendingMachineViewModel
+
+@{
+    ViewBag.Title = "Drinks Vending Machine";
+}
+@using (Html.BeginForm("Index", "Drinks", null, FormMethod.Post, new { @id = "drinksForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.quantityInHandPennies)
+    @Html.HiddenFor(model => model.quantityInHandNickels)
+    @Html.HiddenFor(model => model.quantityInHandDimes)
+    @Html.HiddenFor(model => model.quantityInHandQuarters)
+    @Html.HiddenFor(model => model.quantityInStockCoke)
+    @Html.HiddenFor(model => model.quantityInStockPepsi)
+    @Html.HiddenFor(model => model.quantityInStockSoda)
+    @Html.HiddenFor(model => model.rateCoke)
+    @Html.HiddenFor(model => model.ratePepsi)
+    @Html.HiddenFor(model => model.rateSoda)
+    <div class="container">
+        <div class="card text-white bg-info border-danger">
+            <div class="card-header">
+                <h4>@ViewBag.Title</h4>
+            </div>
+            <div class="card-body">
+                <h4>COINS INFORMATION</h4>
+                <div class="form-horizontal col-md-12">
+                    <div class="form-group">
+                        <div class="row col-md-12">
+                            <div class="col-md-3">
+                                <label class="control-label h3" for="quantityPaidPennies">Pennies </label>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="control-label h3" for="quantityPaidNickels">Nickels </label>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="control-label h3" for="quantityPaidDimes">Dimes </label>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="control-label h3" for="quantityPaidQuarters">Quarters </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row col-md-12">
+                            <div class="col-md-3">
+                                @Html.EditorFor(model => model.quantityPaidPennies, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <div class="col-md-3">
+                                @Html.EditorFor(model => model.quantityPaidNickels, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <div class="col-md-3">
+                                @Html.EditorFor(model => model.quantityPaidDimes, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <div class="col-md-3">
+                                @Html.EditorFor(model => model.quantityPaidQuarters, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                    </div>
+
+                    <br />
+                    <br />
+                    <h4>PRODUCTS INFORMATION</h4>
+                    <br />
+                    <br />
+                    <div class="form-group">
+                        <div class="row col-md-12">
+                            <div class="col-md-3">
+                                <label class="control-label h3" for="quantityRequiredCoke">
+                                    Coke
+                                </label> <br />
+                                @Model.quantityInStockCoke drinks available, Cost = @Model.stockInfoCoke.ProductPrice
+                            </div>
+                            <div class="col-md-3">
+                                @{
+                                    if (Model.quantityInStockCoke > 0)
+                                    {
+                                        @Html.EditorFor(model => model.quantityRequiredCoke, new { htmlAttributes = new { @class = "form-control" } })
+                                    }
+                                    else
+                                    {
+                                        <div class="form-control">out of stock</div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row col-md-12">
+                            <div class="col-md-3">
+                                <label class="control-label h3" for="quantityRequiredPepsi">
+                                    Pepsi
+                                </label> <br />
+                                @Model.quantityInStockPepsi drinks available, Cost = @Model.stockInfoPepsi.ProductPrice
+                            </div>
+                            <div class="col-md-3">
+                                @{
+                                    if (Model.quantityInStockCoke > 0)
+                                    {
+                                        @Html.EditorFor(model => model.quantityRequiredPepsi, new { htmlAttributes = new { @class = "form-control" } })
+                                    }
+                                    else
+                                    {
+                                        <div class="form-control">out of stock</div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row col-md-12">
+                            <div class="col-md-3">
+                                <label class="control-label h3" for="quantityRequiredSoda">
+                                    Soda
+                                </label> <br />
+                                @Model.quantityInStockSoda drinks available, Cost = @Model.stockInfoSoda.ProductPrice
+                            </div>
+                            <div class="col-md-3">
+                                @{
+                                    if (Model.quantityInStockCoke > 0)
+                                    {
+                                        @Html.EditorFor(model => model.quantityRequiredSoda, new { htmlAttributes = new { @class = "form-control" } })
+                                    }
+                                    else
+                                    {
+                                        <div class="form-control">out of stock</div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row col-md-12">
+                            <div class="col-md-6">
+                                <label class="control-label h3" for="saleAmount">Order Total </label>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label h3" for="paidAmount">Total Paid </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row col-md-12">
+                            <div class="col-md-6">
+                                @Html.EditorFor(model => model.saleAmount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            </div>
+                            <div class="col-md-6">
+                                @Html.EditorFor(model => model.paidAmount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="card-footer align-self-center">
+                <input class="btn btn-success btn-lg btn-block" type="submit" Name="getDrinks" VALUE="Get Drinks" id="getDrinks">
+            </div>
+        </div>
+    </div>
+}
+@section scripts
+{
+
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+            var msg = '@Model.userMessage';
+            if (msg) {
+
+                swal({
+                    title: "Done",
+                    text: msg,
+                    type: "success",
+                    //showCancelButton: true,
+                    confirmButtonColor: '#DD6B55',
+                    confirmButtonText: 'OK',
+                    //cancelButtonText: "No, cancel it!",
+                    closeOnConfirm: true,
+                    closeOnCancel: true
+                },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        console.log('confirm');
+                    } else {
+                        console.log('not confirm');
+                    }
+                });
+
+
+            }
+        });
+
+        $("body").on("blur", "#quantityRequiredCoke", function (e) {
+            setSaleAmount();
+        });
+
+        $("body").on("blur", "#quantityRequiredPepsi", function (e) {
+            setSaleAmount();
+        });
+
+        $("body").on("blur", "#quantityRequiredSoda", function (e) {
+            setSaleAmount();
+        });
+
+        function setSaleAmount() {
+            var requiredCoke = Number($("#quantityRequiredCoke").val());
+            var requiredPepsi = Number($("#quantityRequiredPepsi").val());
+            var requiredSoda = Number($("#quantityRequiredSoda").val());
+            if (requiredCoke == 0 && requiredPepsi == 0 && requiredSoda == 0)
+                return;
+
+            var rateCoke = parseInt(@Model.rateCoke);
+            var ratePepsi = parseInt(@Model.ratePepsi);
+            var rateSoda = parseInt(@Model.rateSoda);
+
+            var amountCoke = requiredCoke * rateCoke;
+            var amountPepsi = requiredPepsi * ratePepsi;
+            var amountSoda = requiredSoda * rateSoda;
+
+            var totalAmount = amountCoke + amountPepsi + amountSoda;
+
+            $("#saleAmount").val(totalAmount);
+        }
+
+
+        $("body").on("blur", "#quantityPaidPennies", function (e) {
+            setPaidAmount();
+        });
+
+        $("body").on("blur", "#quantityPaidNickels", function (e) {
+            setPaidAmount();
+        });
+
+        $("body").on("blur", "#quantityPaidDimes", function (e) {
+            setPaidAmount();
+        });
+
+        $("body").on("blur", "#quantityPaidQuarters", function (e) {
+            setPaidAmount();
+        });
+
+        function setPaidAmount() {
+            var paidPennies = Number($("#quantityPaidPennies").val());
+            var paidNickels = Number($("#quantityPaidNickels").val());
+            var paidDimes = Number($("#quantityPaidDimes").val());
+            var paidQuarters = Number($("#quantityPaidQuarters").val());
+            if (paidPennies == 0 && paidNickels == 0 && paidDimes == 0 && paidQuarters == 0)
+                return;
+
+            var totalPaidAmount = paidPennies;
+            if (paidNickels > 0) totalPaidAmount += (paidNickels * 5)
+            if (paidDimes > 0) totalPaidAmount += (paidDimes * 10)
+            if (paidQuarters > 0) totalPaidAmount += (paidQuarters * 25)
+
+            $("#paidAmount").val(totalPaidAmount);
+
+            var totalSaleAmount = Number($("#saleAmount").val());
+            if (totalPaidAmount > 0 && totalSaleAmount > 0 && (totalPaidAmount >= totalSaleAmount)) {
+                $('#getDrinks').removeAttr('disabled');
+            }
+            else {
+                $('#getDrinks').attr('disabled', 'disabled');
+            }
+        }
+    </script>
+
+}
